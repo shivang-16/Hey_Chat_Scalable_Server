@@ -8,9 +8,9 @@ const app = express();
 
 export const server = createServer(app);
 
-app.use(config({
+config({
     path: './.env'
-}))
+})
 
 app.use(cors());
 app.use(cookieParser());
