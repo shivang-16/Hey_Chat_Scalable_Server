@@ -4,16 +4,23 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { config } from "dotenv";
 import UserRouter from "./routes/userRouter.js";
+import { Server } from "socket.io";
+
 
 const app = express();
 
-export const server = createServer(app);
 
 config({
   path: "./.env",
 });
 
-console.log();
+export const server = createServer(app);
+const io = new Server(server, {
+    cors:{
+        origin: "*"
+    }
+})
+
 
 app.use(express.json());
 app.use(cookieParser());
@@ -24,4 +31,15 @@ app.use("/api/user", UserRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello this is working");
+});
+
+
+io.on('connection', (socket) => {
+  console.log('User connected', socket.id);
+
+  socket.emit("welcome", "Welocme to the server")
+  // socket.on("message", (message) => {
+  //     console.log(message)
+  //     io.emit("received_message", message)
+  // })
 });
