@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 const sendCookie = async (user, res, message, statuscode) => {
-  const token = jwt.sign({ user: user._id }, process.env.JWT_SECRET);
+  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
   res
     .status(statuscode)
     .cookie("token", token, {
@@ -13,6 +13,7 @@ const sendCookie = async (user, res, message, statuscode) => {
     .json({
       success: true,
       message: message,
+      user,
     });
 };
 

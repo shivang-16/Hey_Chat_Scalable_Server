@@ -1,11 +1,13 @@
 import express from "express";
 import {
+  getMyProfile,
   login,
   logout,
   register,
   resendOtp,
   verifyOtp,
 } from "../controllers/userController.js";
+import isAuthenticated from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -14,5 +16,6 @@ router.post("/verify", verifyOtp);
 router.post("/resend", resendOtp);
 router.post("/login", login);
 router.get("/logout", logout);
+router.get("/profile", isAuthenticated, getMyProfile);
 
 export default router;

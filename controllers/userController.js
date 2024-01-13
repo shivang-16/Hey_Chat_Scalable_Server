@@ -33,12 +33,10 @@ export const register = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: error.message || "Internal Server Error",
-      });
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal Server Error",
+    });
   }
 };
 
@@ -56,12 +54,10 @@ export const resendOtp = async (req, res) => {
       message: "Verification code Resend to your email",
     });
   } catch (error) {
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: error.message || "Internal Server Error",
-      });
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal Server Error",
+    });
   }
 };
 
@@ -80,12 +76,10 @@ export const verifyOtp = async (req, res) => {
     await user.save();
     sendCookie(user, res, "Registered Successfully", 201);
   } catch (error) {
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: error.message || "Internal Server Error",
-      });
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal Server Error",
+    });
   }
 };
 
@@ -107,14 +101,12 @@ export const login = async (req, res) => {
       });
     }
 
-    sendCookie(user, req, `Hey! ${user.name}`, 200);
+    sendCookie(user, res, `Hey! ${user.name}`, 200);
   } catch (error) {
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: error.message || "Internal Server Error",
-      });
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal Server Error",
+    });
   }
 };
 
@@ -130,4 +122,19 @@ export const logout = (req, res) => {
       success: false,
       message: "Logged Out",
     });
+};
+
+export const getMyProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user);
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal Server Error",
+    });
+  }
 };
