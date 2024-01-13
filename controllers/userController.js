@@ -127,6 +127,8 @@ export const logout = (req, res) => {
 export const getMyProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user);
+
+    console.log(user);
     res.status(200).json({
       success: true,
       user,
