@@ -36,10 +36,27 @@ app.get("/", (req, res) => {
   res.send("Hello this is working");
 });
 
-io.on("connection", (socket) => {
-  console.log("User connected", socket.id);
+const connected_users = [];
 
-  socket.emit("welcome", "Welocme to the server");
+io.on("connection", (socket) => {
+  socket.on("welcome", (data) => {
+    // Check if the user with the same userId already exists in connected_users
+    const existingUserIndex = connected_users.findIndex(
+      (user) => user.userId === data.userId,
+    );
+
+    if (existingUserIndex !== -1) {
+      // Update the existing user's information
+      connected_users[existingUserIndex] = data;
+    } else {
+      // Add the new user to the array
+      connected_users.push(data);
+    }
+
+    console.log(connected_users);
+    io.emit("connected_users", connected_users);
+  });
+
   socket.on("text", (text) => {
     console.log(text);
     io.emit("received_text", text);

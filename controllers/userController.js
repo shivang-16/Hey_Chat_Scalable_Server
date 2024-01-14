@@ -128,10 +128,24 @@ export const getMyProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user);
 
-    console.log(user);
     res.status(200).json({
       success: true,
       user,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal Server Error",
+    });
+  }
+};
+
+export const getAllUser = async (req, res) => {
+  try {
+    const allUsers = await User.find();
+    res.status(200).json({
+      success: true,
+      allUsers,
     });
   } catch (error) {
     return res.status(500).json({
