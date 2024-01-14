@@ -4,6 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { config } from "dotenv";
 import UserRouter from "./routes/userRouter.js";
+import ChatRouter from "./routes/chatRoutes.js";
 import { Server } from "socket.io";
 
 const app = express();
@@ -31,6 +32,7 @@ app.use(
 );
 
 app.use("/api/user", UserRouter);
+app.use("/api/chat", ChatRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello this is working");
@@ -57,7 +59,7 @@ io.on("connection", (socket) => {
 
   socket.on("text", (text) => {
     console.log(text);
-    console.log(text[0].targetSocketId)
-    io.to(text[0]?.targetSocketId).emit("received_text", text);
+    console.log(text[text.length - 1].targetSocketId);
+    io.to(text[text.length - 1]?.targetSocketId).emit("received_text", text);
   });
 });
