@@ -79,3 +79,19 @@ export const saveChat = async (req, res) => {
     });
   }
 };
+
+export const get_Chat_By_Sender_N_Receover = async(req, res) => {
+    try {
+        const {senderId, receiverId} = req.body
+
+        const requiredChat = await Chat.find({senderId, receiverId})
+        if(!requiredChat) return res.status(404).json({success: false, message: "No such chats found"})
+
+        res.status(200).json({success: true, chat: requiredChat})
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message || "Internal server error",
+          });
+    }
+}
