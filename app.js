@@ -46,10 +46,8 @@ io.on("connection", (socket) => {
     );
 
     if (existingUserIndex !== -1) {
-      // Update the existing user's information
       connected_users[existingUserIndex] = data;
     } else {
-      // Add the new user to the array
       connected_users.push(data);
     }
 
@@ -59,6 +57,7 @@ io.on("connection", (socket) => {
 
   socket.on("text", (text) => {
     console.log(text);
-    io.emit("received_text", text);
+    console.log(text[0].targetSocketId)
+    io.to(text[0]?.targetSocketId).emit("received_text", text);
   });
 });
