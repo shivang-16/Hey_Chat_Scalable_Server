@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import { config } from "dotenv";
 import UserRouter from "./routes/userRouter.js";
 import ChatRouter from "./routes/chatRoutes.js";
+import GroupRouter from './routes/groupRoutes.js'
 import { Server } from "socket.io";
 
 const app = express();
@@ -33,6 +34,7 @@ app.use(
 
 app.use("/api/user", UserRouter);
 app.use("/api/chat", ChatRouter);
+app.use("/api/group", GroupRouter)
 
 app.get("/", (req, res) => {
   res.send("Hello this is working");
