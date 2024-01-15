@@ -14,6 +14,10 @@ const userSchema = new Schema({
     type: String,
     select: false,
   },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 export const User = model("User", userSchema);
