@@ -9,11 +9,7 @@ export const saveGroup = async(req, res) => {
         const group = await Group.create({
             groupName,
             creator: req.user._id,
-            members: [
-                {
-                    user: req.user._id
-                }
-            ]
+            members: req.user
         })
 
         res.status(201).json({
@@ -63,8 +59,8 @@ export const getMyGroups = async(req, res) => {
 
 export const joinGroup = async (req, res) => {
     try {
-      const { groupId } = req.query;
-  
+      const { groupId } = req.body;
+      console.log(groupId)
       // Find the group by groupId and update the members array
       const updatedGroup = await Group.findByIdAndUpdate(
         groupId,

@@ -11,10 +11,9 @@ const groupSchema = new Schema({
     messages: [messageSchema],
     members: [
         {
-          user: {
             type: Schema.Types.ObjectId,
             ref: 'User', 
-          },
+        
         },
       ],
     createdAt: {

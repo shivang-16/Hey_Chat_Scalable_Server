@@ -64,4 +64,16 @@ io.on("connection", (socket) => {
     console.log(text[text.length - 1].targetSocketId);
     io.to(text[text.length - 1]?.targetSocketId).emit("received_text", text);
   });
+
+  socket.on("join_room", (room) => {
+    console.log(room)
+    socket.join(room)
+    io.to(room).emit("welcomce_group", `A user has joined the ${room}`)
+  });
+  // socket.on("group_text", (groupInfo) => {
+  //   console.log(groupInfo)
+  //     io.to(groupInfo?.groupName).emit("received_text", groupInfo.message)
+  //   })
+
+ 
 });
