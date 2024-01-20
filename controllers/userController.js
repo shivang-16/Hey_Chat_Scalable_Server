@@ -95,7 +95,7 @@ export const login = async (req, res) => {
     const isMatched = await bcrypt.compare(password, user.password);
 
     if (!isMatched) {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: "Wrong Credentials",
       });

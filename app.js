@@ -7,6 +7,7 @@ import UserRouter from "./routes/userRouter.js";
 import ChatRouter from "./routes/chatRoutes.js";
 import GroupRouter from './routes/groupRoutes.js'
 import { Server } from "socket.io";
+// import kafka from "./utils/kafka.js";
 
 const app = express();
 
@@ -41,6 +42,7 @@ app.get("/", (req, res) => {
 });
 
 const connected_users = [];
+// const producer = kafka.producer()
 
 io.on("connection", (socket) => {
   socket.on("welcome", (data) => {
@@ -55,13 +57,23 @@ io.on("connection", (socket) => {
       connected_users.push(data);
     }
 
-    console.log(connected_users);
+    // console.log(connected_users);
     io.emit("connected_users", connected_users);
   });
 
-  socket.on("text", (text) => {
+  socket.on("text", async(text) => {
     console.log(text);
-    console.log(text[text.length - 1].targetSocketId);
+
+    // await producer.connect()
+    // console.log("Producer connected")
+
+    // await producer.send({
+    //   topic: "Personal_Chats",
+    //   messages: text,
+    // }).on("close", async () => {
+    //   await producer.disconnect();
+    // })
+
     io.to(text[text.length - 1]?.targetSocketId).emit("received_text", text);
   });
 
@@ -75,5 +87,9 @@ io.on("connection", (socket) => {
   //     io.to(groupInfo?.groupName).emit("received_text", groupInfo.message)
   //   })
 
+  socket.on('disconnect', () => {
+    console.log(`User disconnected : ${socket.id}`);
+    console.log(connected_users, "after disconnection")
+  });
  
 });
